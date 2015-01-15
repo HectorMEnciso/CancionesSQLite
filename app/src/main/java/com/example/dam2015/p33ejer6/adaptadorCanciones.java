@@ -21,12 +21,12 @@ public class adaptadorCanciones extends ArrayAdapter<Cancion>{
         this.context=context;
         this.ca=c;
     }
-    public void addCancion(int id,String titulo, String autor, String duracion){
-        ca.add(new Cancion (id,titulo,autor,duracion));
+    public void addCancion(int id,String titulo, String autor, String duracion,ArrayList<Cancion> canciones){
+        canciones.add(new Cancion (id,titulo,autor,duracion));
     }
 
-    public void editCancion(Cancion c,int posicion){
-        ca.set(posicion,c);
+    public void editCancion(Cancion c,int posicion,ArrayList<Cancion> canciones){
+        canciones.set(posicion,c);
     }
     public void delCancion(ArrayList<Cancion> c, int posi){
         c.remove(posi);//Borra cancion selecionada

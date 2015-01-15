@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
                 adaptador.notifyDataSetChanged();//Refresca adaptador.
                 return true;
             case R.id.GuardarFichero:
-                saveCanciones(datos);
+                //saveCanciones(datos);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                adaptador.addCancion(R.drawable.rihanna, bundle.getString("titulo"), bundle.getString("autor"), bundle.getString("duracion"));
+                adaptador.addCancion(R.drawable.rihanna, bundle.getString("titulo"), bundle.getString("autor"), bundle.getString("duracion"),datos);
                 Toast.makeText(getBaseContext(), "Canción añadida", Toast.LENGTH_SHORT).show();
                 adaptador.notifyDataSetChanged();//Refresca adaptador.
             }
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
                 //AdapterView
-                adaptador.editCancion(new Cancion(R.drawable.rihanna, bundle.getString("titulo"), bundle.getString("autor"), bundle.getString("duracion")), Integer.parseInt(bundle.getString("pos")));
+                adaptador.editCancion(new Cancion(R.drawable.rihanna, bundle.getString("titulo"), bundle.getString("autor"), bundle.getString("duracion")), Integer.parseInt(bundle.getString("pos")),datos);
                 adaptador.notifyDataSetChanged();//Refresca adaptador.
             }
         }
@@ -146,16 +146,16 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         if (datos.isEmpty()) {//Si el arraylist esta vacio
-            loadCanciones();
+            //loadCanciones();
         }
     }
 
     public void onPause() {
         super.onPause();
-        saveCanciones(datos);
+        //saveCanciones(datos);
     }
 
-    public void saveCanciones(ArrayList<Cancion> d) {
+    /*public void saveCanciones(ArrayList<Cancion> d) {
         Cancion cancion = null;
         //  if(datos.isEmpty()){
         // Toast.makeText(getBaseContext(),"No hay canciones que guardar.",Toast.LENGTH_SHORT).show();
@@ -174,9 +174,9 @@ public class MainActivity extends Activity {
             Log.e("Ficheros", "Error al escribir en SD");
         }
         //}
-    }
+    }*/
 
-    public void loadCanciones() {
+    /*public void loadCanciones() {
         int id = 0;
         String titulo = null;
         String autor = null;
@@ -197,5 +197,5 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Ficheros", "Error al leer en SD");
         }
-    }
+    }*/
 }
