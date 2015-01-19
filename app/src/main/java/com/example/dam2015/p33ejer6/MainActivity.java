@@ -3,6 +3,7 @@ package com.example.dam2015.p33ejer6;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -153,16 +154,17 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         if (datos.isEmpty()) {//Si el arraylist esta vacio
-            //loadCanciones();
+            loadCanciones();
         }
     }
 
-    /*public void onStop() {
-        super.onStop();
-        Log.e("Entro onStop","");
+    public void onPause() {
+        super.onPause();
+        Log.e("Entro onDestroy","");
         saveCanciones(datos);
-    }*/
+    }
     public void saveCanciones(ArrayList<Cancion> d) {
+        db.delete("Canciones",null,null);
         String titulo=null,autor=null,duracion=null;
         ContentValues nuevoRegistro=new ContentValues();
         int idfoto=0;
@@ -182,47 +184,21 @@ public class MainActivity extends Activity {
 
         }
     }
-    /*public void saveCanciones(ArrayList<Cancion> d) {
-        Cancion cancion = null;
-        //  if(datos.isEmpty()){
-        // Toast.makeText(getBaseContext(),"No hay canciones que guardar.",Toast.LENGTH_SHORT).show();
-        // }
-        //else{
-        try {
-            File ruta_sd = Environment.getExternalStorageDirectory();
-            File f = new File(ruta_sd.getAbsolutePath(), "lista_canciones.txt");
-            PrintWriter printWriter = new PrintWriter(f);
-            for (int x = 0; x < datos.size(); x++) {
-                cancion = new Cancion(datos.get(x).getIdentificador(), datos.get(x).getTitulo(), datos.get(x).getAutor(), datos.get(x).getDuracion());
-                printWriter.println(cancion.toString());
-            }
-            printWriter.close();
-        } catch (Exception e) {
-            Log.e("Ficheros", "Error al escribir en SD");
-        }
-        //}
-    }*/
-
-    /*public void loadCanciones() {
-        int id = 0;
+    public void loadCanciones() {
+        int idfoto = 0;
         String titulo = null;
         String autor = null;
         String duracion = null;
-        String sCadena;
-        File ruta_sd = Environment.getExternalStorageDirectory();
-        File f = new File(ruta_sd.getAbsolutePath(), "lista_canciones.txt");
-        try {
-            BufferedReader fin = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-            while ((sCadena = fin.readLine()) != null) {
-                id = Integer.parseInt(sCadena);
-                titulo = fin.readLine();
-                autor = fin.readLine();
-                duracion = fin.readLine();
-                adaptador.addCancion(id, titulo, autor, duracion);
-            }
+        Cursor c = db.rawQuery("SELECT idfoto,titulo,autor,duracion FROM Canciones", null);
+        if (c.moveToFirst()) {
+            do {
+                idfoto = c.getInt(0);
+                titulo = c.getString(1);
+                autor=c.getString(2);
+                duracion=c.getString(3);
+                adaptador.addCancion(idfoto, titulo, autor, duracion,datos);
+            } while(c.moveToNext());
             adaptador.notifyDataSetChanged();//Refresca adaptador.
-        } catch (Exception e) {
-            Log.e("Ficheros", "Error al leer en SD");
         }
-    }*/
+    }
 }
