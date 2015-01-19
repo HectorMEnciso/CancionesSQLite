@@ -2,6 +2,7 @@ package com.example.dam2015.p33ejer6;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -37,6 +38,11 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Abrimos la base de datos 'DBCanciones' en modo escritura
+        CancionesSQLiteHelper candb= new CancionesSQLiteHelper(this,"DBCanciones",null,1);
+
+        SQLiteDatabase db = candb.getWritableDatabase();
+
         adaptador = new adaptadorCanciones(this, datos);
         LstOpciones = (ListView) findViewById(R.id.LstOpciones);
         LstOpciones.setAdapter(adaptador);
