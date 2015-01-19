@@ -1,6 +1,7 @@
 package com.example.dam2015.p33ejer6;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,22 +34,22 @@ public class MainActivity extends Activity {
     adaptadorCanciones adaptador;
     private ArrayList<Cancion> datos = new ArrayList<Cancion>();
     int posi;
-
+    SQLiteDatabase db=null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Abrimos la base de datos 'DBCanciones' en modo escritura
         CancionesSQLiteHelper candb= new CancionesSQLiteHelper(this,"DBCanciones",null,1);
 
-        SQLiteDatabase db = candb.getWritableDatabase();
+       db = candb.getWritableDatabase();
 
         adaptador = new adaptadorCanciones(this, datos);
         LstOpciones = (ListView) findViewById(R.id.LstOpciones);
         LstOpciones.setAdapter(adaptador);
         addOnClickView();
         registerForContextMenu(LstOpciones);
-
     }
 
     //Generacion del menu a partir del menu_main.xml
@@ -123,7 +124,7 @@ public class MainActivity extends Activity {
                 adaptador.notifyDataSetChanged();//Refresca adaptador.
                 return true;
             case R.id.GuardarFichero:
-                //saveCanciones(datos);
+                saveCanciones(datos);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -156,11 +157,31 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onPause() {
-        super.onPause();
-        //saveCanciones(datos);
-    }
+    /*public void onStop() {
+        super.onStop();
+        Log.e("Entro onStop","");
+        saveCanciones(datos);
+    }*/
+    public void saveCanciones(ArrayList<Cancion> d) {
+        String titulo=null,autor=null,duracion=null;
+        ContentValues nuevoRegistro=new ContentValues();
+        int idfoto=0;
+        for (int x = 0; x < d.size(); x++) {
+            idfoto = d.get(x).getIdentificador();
+            titulo=d.get(x).getTitulo();
+            autor= d.get(x).getAutor();
+            duracion= d.get(x).getDuracion();
 
+            nuevoRegistro.put("idfoto", idfoto);
+            nuevoRegistro.put("titulo", titulo);
+            nuevoRegistro.put("autor", autor);
+            nuevoRegistro.put("duracion", duracion);
+            db.insert("Canciones", null, nuevoRegistro);
+            Log.e("prueeebaaaaaaa",nuevoRegistro.toString());
+            nuevoRegistro.clear();
+
+        }
+    }
     /*public void saveCanciones(ArrayList<Cancion> d) {
         Cancion cancion = null;
         //  if(datos.isEmpty()){

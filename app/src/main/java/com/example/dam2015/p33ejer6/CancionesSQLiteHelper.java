@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class CancionesSQLiteHelper extends SQLiteOpenHelper {
 
-    String sqlCreate = "CREATE TABLE Canciones (id INTEGER, titulo TEXT,autor TEXT, duracion TEXT)";
+    String sqlCreate = "CREATE TABLE Canciones (id integer PRIMARY KEY AUTOINCREMENT,idfoto INTEGER, titulo TEXT,autor TEXT, duracion TEXT)";
 
     public CancionesSQLiteHelper(Context contexto, String nombre,SQLiteDatabase.CursorFactory factory, int version) {
         super(contexto, nombre, factory, version);
